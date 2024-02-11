@@ -26,6 +26,9 @@ classes = [
     'Signature_2',
     'Sum'
 ]
+
+text_classes=["AC_Payee","Payee","Sum"]
+number_classes=["Account_number","MICR","Amount","Date"]
 # load an instance segmentation model pre-trained pre-trained on COCO
 model = torchvision.models.detection.fasterrcnn_mobilenet_v3_large_fpn(pretrained=False)
 # get number of input features for the classifier
@@ -98,9 +101,10 @@ def ocr_process(image_tensor,pred):
 
 def crop_image(image_tensor,pred,img_name):
     image_tensor = (image_tensor.to(torch.float32) * 255.0).to(torch.uint8)
-    spell = Speller(lang='en')
-    object_images = []
+    # spell = Speller(lang='en')
+    # object_images = []
     for box, label, score in zip(pred['boxes'], pred['labels'], pred['scores']):
+        class_name=classes[label]
         print(f"box: {box} label: {label} score: {score}")
         if score > 0.8:  # Adjust the threshold as needed
             # Extract the object from the image using the bounding box
@@ -110,8 +114,15 @@ def crop_image(image_tensor,pred,img_name):
             object_img = (image_tensor[1,y1:y2, x1:x2]).to('cpu').numpy()
             object_img = cv2.resize(object_img, None, fx=1.2, fy=1.2, interpolation=cv2.INTER_AREA)
 
-                    # Specify the path where you want to save the resized image
-            output_dir = r"E:\QuickFox\OCR\OCR_API\save\\"
+            # Specify the path where you want to save the resized image
+            if class_name in text_classes:
+                output_dir = r"E:\QuickFox\OCR\OCR_API\save\text\\"
+            elif class_name in number_classes:
+                output_dir = r"E:\QuickFox\OCR\OCR_API\save\number\\"
+            else:
+                continue
+                # output_path = output_dir+"\\"+img_name[:-4]+"-"+class_name+".jpg"
+            # output_dir = r"E:\QuickFox\OCR\OCR_API\save\\"
             output_path = output_dir+img_name[:-4]+"-"+classes[label]+".jpg"
               # Replace with the desired file path and format
             os.makedirs(os.path.dirname(output_dir), exist_ok=True)
