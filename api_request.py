@@ -2,10 +2,10 @@ import requests
 import os
 
 # Specify the API endpoint URL
-api_url = "http://127.0.0.1:8000/uploadfile/"
+api_url = "http://127.0.0.1:8000/getobjects/"
 
 # Path to the file you want to upload
-file_path = r"E:\QuickFox\OCR\OD Api\00c7ee6f-3901010008839_66779944.png"
+file_path = r"E:\QuickFox\OCR\OCR_API\00c7ee6f-3901010008839_66779944.png"
 
 
 
