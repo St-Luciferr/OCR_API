@@ -1,0 +1,16 @@
+fastapi[all]
+torch
+torchvision
+pandas
+pyarrow
+numpy
+matplotlib
+opencv-python
+pycocotools
+pillow
+nltk
+pytesseract
+autocorrect
+paddleocr
+paddlepaddle
+PyMuPDF==1.21.1
